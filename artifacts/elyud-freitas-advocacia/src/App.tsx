@@ -2,21 +2,36 @@ import { type FormEvent, useEffect, useRef, useState } from 'react';
 import {
   ArrowDown,
   ArrowRight,
+  ArrowUpRight,
+  Baby,
+  Building2,
   Check,
   ChevronDown,
   Clock3,
+  Crown,
   FileCheck2,
+  FileText,
   Gavel,
+  Handshake,
+  HeartCrack,
+  HeartHandshake,
   Home,
+  KeyRound,
+  Landmark,
   LockKeyhole,
   Menu,
   MessageCircle,
   Scale,
+  ScrollText,
   ShieldCheck,
   Sparkles,
+  UsersRound,
   X,
 } from 'lucide-react';
 import logo from './assets/logo.webp';
+import adv01 from './assets/adv01.png';
+import adv02 from './assets/adv02.png';
+import adv03 from './assets/adv03.png';
 
 const WHATSAPP_LINK =
   'https://wa.me/?text=' +
@@ -68,6 +83,95 @@ const benefits = [
     icon: FileCheck2,
     title: 'Pagamento flexível',
     text: 'Pix, transferência ou cartão parcelado para organizar o custo sem virar mais um peso na sua rotina.',
+  },
+];
+
+type AreaCategory = 'todos' | 'familia' | 'imobiliario';
+
+const practiceAreas = [
+  {
+    category: 'familia' as const,
+    categoryLabel: 'Direito de Família',
+    title: 'Direito de Família',
+    text: 'Atuação em conflitos familiares com acolhimento, estratégia e proteção dos seus direitos.',
+    icon: UsersRound,
+  },
+  {
+    category: 'familia' as const,
+    categoryLabel: 'Direito de Família',
+    title: 'Divórcio',
+    text: 'Divórcio consensual ou litigioso com discrição, agilidade e segurança patrimonial.',
+    icon: HeartCrack,
+  },
+  {
+    category: 'familia' as const,
+    categoryLabel: 'Direito de Família',
+    title: 'Alimentos',
+    text: 'Fixação, revisão e execução de pensão alimentícia com foco na proteção familiar.',
+    icon: Baby,
+  },
+  {
+    category: 'familia' as const,
+    categoryLabel: 'Direito de Família',
+    title: 'Guarda e Visitas',
+    text: 'Definição de guarda e convivência com atenção ao bem-estar da criança e segurança jurídica.',
+    icon: Crown,
+  },
+  {
+    category: 'familia' as const,
+    categoryLabel: 'Direito de Família',
+    title: 'União Estável',
+    text: 'Reconhecimento, dissolução e regularização de união estável com proteção patrimonial.',
+    icon: HeartHandshake,
+  },
+  {
+    category: 'familia' as const,
+    categoryLabel: 'Direito de Família',
+    title: 'Inventário e Partilha',
+    text: 'Inventário judicial e extrajudicial com orientação segura para divisão patrimonial.',
+    icon: ScrollText,
+  },
+  {
+    category: 'imobiliario' as const,
+    categoryLabel: 'Imobiliário e Contratos',
+    title: 'Direito Imobiliário',
+    text: 'Assessoria em imóveis, contratos, regularização e defesa de interesses patrimoniais.',
+    icon: Home,
+  },
+  {
+    category: 'imobiliario' as const,
+    categoryLabel: 'Imobiliário e Contratos',
+    title: 'Compra e Venda',
+    text: 'Negociações imobiliárias com análise documental e proteção jurídica em cada etapa.',
+    icon: Handshake,
+  },
+  {
+    category: 'imobiliario' as const,
+    categoryLabel: 'Imobiliário e Contratos',
+    title: 'Usucapião',
+    text: 'Regularização de imóveis por posse com suporte jurídico ágil e documentação adequada.',
+    icon: KeyRound,
+  },
+  {
+    category: 'imobiliario' as const,
+    categoryLabel: 'Imobiliário e Contratos',
+    title: 'Regularização de Imóveis',
+    text: 'Assessoria em escritura, registro, averbação e documentação de imóveis irregulares.',
+    icon: Landmark,
+  },
+  {
+    category: 'imobiliario' as const,
+    categoryLabel: 'Imobiliário e Contratos',
+    title: 'Locação e Despejo',
+    text: 'Atuação em contratos de locação, inadimplência, despejo e defesa das partes envolvidas.',
+    icon: Building2,
+  },
+  {
+    category: 'imobiliario' as const,
+    categoryLabel: 'Imobiliário e Contratos',
+    title: 'Contratos',
+    text: 'Elaboração, revisão e análise contratual para reduzir riscos e evitar prejuízos futuros.',
+    icon: FileText,
   },
 ];
 
@@ -148,6 +252,7 @@ function SectionLabel({ children, light = false }: { children: string; light?: b
 function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [activeArea, setActiveArea] = useState<AreaCategory>('todos');
   const [submitted, setSubmitted] = useState(false);
 
   const submitForm = (event: FormEvent<HTMLFormElement>) => {
@@ -261,6 +366,34 @@ function App() {
         </div>
       </section>
 
+      <section className="relative overflow-hidden bg-[#071941] px-5 py-24 text-[#f7f3eb] sm:px-8 lg:px-10 lg:py-32">
+        <div className="photo-section-glow absolute -right-32 top-12 h-80 w-80 rounded-full border border-[#d9ae62]/20" />
+        <div className="relative mx-auto grid max-w-[1110px] items-center gap-14 lg:grid-cols-[.95fr_1.05fr] lg:gap-24">
+          <div className="reveal relative mx-auto w-full max-w-[480px] lg:mx-0">
+            <div className="photo-frame absolute -bottom-5 -left-5 h-28 w-28 border-b border-l border-[#d9ae62]/80" />
+            <div className="photo-frame absolute -right-5 -top-5 h-28 w-28 border-r border-t border-[#d9ae62]/80" />
+            <figure className="relative overflow-hidden border border-[#d9ae62]/35 bg-[#102855] p-2 shadow-2xl">
+              <img src={adv01} alt="Dr. Elyud Freitas em seu escritório" className="editorial-photo aspect-[1.03/1] w-full object-cover object-center" />
+              <figcaption className="absolute bottom-5 left-5 right-5 flex items-end justify-between border-t border-white/25 pt-3 text-[10px] uppercase tracking-[.16em] text-[#f4e2bd]">
+                <span>Dr. Elyud Freitas</span>
+                <span>Brasília · DF</span>
+              </figcaption>
+            </figure>
+          </div>
+          <div className="reveal reveal-delay-1">
+            <SectionLabel light>Presença que orienta</SectionLabel>
+            <h2 className="serif mt-6 max-w-[540px] text-5xl leading-[.98] text-[#f7f3eb] sm:text-6xl">A técnica fica mais forte quando existe escuta.</h2>
+            <p className="mt-8 max-w-[580px] text-lg leading-8 text-[#cbd3df]">Cada caso tem uma história, um ritmo e uma preocupação diferente. Por isso, o atendimento começa entendendo o que realmente está em jogo para você.</p>
+            <p className="mt-6 max-w-[540px] leading-8 text-[#aeb8c9]">A experiência do Dr. Elyud Freitas une estratégia jurídica, linguagem simples e proximidade em cada etapa — no escritório ou à distância.</p>
+            <div className="mt-10 flex flex-wrap gap-3">
+              {['Escuta atenta', 'Estratégia clara', 'Sigilo total'].map((item) => (
+                <span key={item} className="rounded-full border border-[#d9ae62]/35 px-4 py-2 text-xs font-semibold text-[#e4c582]">{item}</span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section className="bg-[#e9e3d8] px-5 py-24 sm:px-8 lg:px-10 lg:py-28">
         <div className="mx-auto max-w-[1110px]">
           <div className="reveal flex flex-col justify-between gap-7 border-b border-[#071941]/15 pb-8 sm:flex-row sm:items-end">
@@ -281,24 +414,69 @@ function App() {
         </div>
       </section>
 
-      <section id="atuacao" className="bg-[#071941] px-5 py-24 text-[#f7f3eb] sm:px-8 lg:px-10 lg:py-32">
-        <div className="mx-auto grid max-w-[1110px] gap-16 lg:grid-cols-[.8fr_1.2fr] lg:gap-24">
-          <div className="reveal">
-            <SectionLabel light>A consultoria jurídica estratégica</SectionLabel>
-            <h2 className="serif mt-6 text-5xl leading-[.98] text-[#f7f3eb] sm:text-6xl">Clareza para saber exatamente o próximo passo.</h2>
-            <div className="mt-9 h-px w-20 bg-[#ab6f0d]" />
+      <section id="atuacao" className="relative overflow-hidden bg-[#071941] px-5 py-24 text-[#f7f3eb] sm:px-8 lg:px-10 lg:py-32">
+        <div className="area-orbit area-orbit-one" />
+        <div className="area-orbit area-orbit-two" />
+        <div className="relative mx-auto max-w-[1110px]">
+          <div className="grid gap-10 lg:grid-cols-[.8fr_1.2fr] lg:items-end lg:gap-24">
+            <div className="reveal">
+              <SectionLabel light>Áreas de atuação</SectionLabel>
+              <h2 className="serif mt-6 text-5xl leading-[.98] text-[#f7f3eb] sm:text-6xl">Clareza para saber exatamente o próximo passo.</h2>
+              <div className="mt-9 h-px w-20 bg-[#ab6f0d]" />
+            </div>
+            <div className="reveal reveal-delay-1">
+              <p className="max-w-[650px] text-lg leading-8 text-[#cbd3df]">Da proteção da sua família à segurança do seu patrimônio, cada orientação começa com uma escuta atenta e termina com um caminho claro.</p>
+              <div className="mt-8 grid gap-4 sm:grid-cols-3">
+                {['Análise real', 'Linguagem simples', 'Acompanhamento contínuo'].map((item, index) => (
+                  <div key={item} className="border-l border-[#ab6f0d] pl-4">
+                    <span className="font-mono text-xs text-[#d9ae62]">0{index + 1}</span>
+                    <p className="mt-3 text-sm font-semibold leading-5 text-[#f7f3eb]">{item}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
-          <div className="reveal reveal-delay-1">
-            <p className="max-w-[650px] text-lg leading-8 text-[#cbd3df]">A Consultoria Jurídica Estratégica do Dr. Elyud Freitas funciona em três frentes: análise real do seu caso, orientação em linguagem simples e acompanhamento contínuo — tudo com a mesma validade jurídica de um atendimento presencial, sem você precisar sair de casa.</p>
-            <p className="mt-8 max-w-[570px] text-lg leading-8 text-[#cbd3df]">Você entende exatamente onde está, o que pode fazer e qual o próximo passo — antes mesmo de decidir contratar.</p>
-            <div className="mt-12 grid gap-4 sm:grid-cols-3">
-              {['Análise real', 'Linguagem simples', 'Acompanhamento contínuo'].map((item, index) => (
-                <div key={item} className="border-l border-[#ab6f0d] pl-4">
-                  <span className="font-mono text-xs text-[#d9ae62]">0{index + 1}</span>
-                  <p className="mt-3 text-sm font-semibold leading-5 text-[#f7f3eb]">{item}</p>
-                </div>
+
+          <div className="reveal reveal-delay-2 mt-16 flex flex-col gap-5 border-y border-[#d9ae62]/20 py-5 sm:flex-row sm:items-center sm:justify-between">
+            <p className="max-w-[420px] text-sm leading-6 text-[#aeb8c9]">Escolha uma frente para encontrar a orientação que faz sentido para o seu momento.</p>
+            <div className="flex flex-wrap gap-2" role="group" aria-label="Filtrar áreas de atuação">
+              {[
+                ['todos', 'Todas as áreas'],
+                ['familia', 'Família'],
+                ['imobiliario', 'Imobiliário e contratos'],
+              ].map(([value, label]) => (
+                <button
+                  key={value}
+                  type="button"
+                  aria-pressed={activeArea === value}
+                  onClick={() => setActiveArea(value as AreaCategory)}
+                  className={`area-filter rounded-full px-4 py-2 text-xs font-bold transition-colors ${activeArea === value ? 'area-filter-active' : ''}`}
+                  data-testid={`button-area-filter-${value}`}
+                >
+                  {label}
+                </button>
               ))}
             </div>
+          </div>
+
+          <div className="area-grid mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {practiceAreas
+              .filter((area) => activeArea === 'todos' || area.category === activeArea)
+              .map(({ icon: Icon, title, text, categoryLabel }, index) => (
+                <article key={title} className={`area-card reveal reveal-delay-${(index % 3) + 1} group flex min-h-[285px] flex-col justify-between p-6 sm:p-7`}>
+                  <div>
+                    <div className="area-icon flex h-12 w-12 items-center justify-center rounded-full border border-[#d9ae62]/55 bg-[#102855] text-[#d9ae62]">
+                      <Icon size={22} strokeWidth={1.45} />
+                    </div>
+                    <p className="mt-7 font-mono text-[10px] uppercase tracking-[.16em] text-[#d9ae62]">{categoryLabel}</p>
+                    <h3 className="serif mt-3 text-2xl leading-tight text-[#f7f3eb]">{title}</h3>
+                    <p className="mt-3 text-sm leading-6 text-[#b6c1d2]">{text}</p>
+                  </div>
+                  <a href={WHATSAPP_LINK} target="_blank" rel="noreferrer" className="area-card-link mt-7 inline-flex w-fit items-center gap-2 text-xs font-bold uppercase tracking-[.12em] text-[#e4c582]" data-testid={`link-area-${title.toLowerCase().replaceAll(' ', '-')}`}>
+                    Falar sobre este tema <ArrowUpRight size={15} />
+                  </a>
+                </article>
+              ))}
           </div>
         </div>
       </section>
@@ -321,6 +499,32 @@ function App() {
           <div className="reveal mt-14 flex flex-col gap-5 border-l-2 border-[#ab6f0d] bg-[#eee8dc] px-6 py-6 sm:flex-row sm:items-center sm:justify-between sm:px-8">
             <p className="max-w-[650px] text-sm leading-7 text-[#26334b]">Atendimento mediante agendamento — vagas limitadas por semana para garantir dedicação real a cada caso.</p>
             <a href={WHATSAPP_LINK} target="_blank" rel="noreferrer" className="inline-flex shrink-0 items-center gap-2 text-sm font-bold text-[#8d5909]" data-testid="link-benefits-whatsapp">Quero entender meu caso <ArrowRight size={16} /></a>
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-[#e9e3d8] px-5 py-24 sm:px-8 lg:px-10 lg:py-32">
+        <div className="mx-auto grid max-w-[1110px] items-center gap-14 lg:grid-cols-[1.08fr_.92fr] lg:gap-24">
+          <div className="reveal order-2 grid grid-cols-2 gap-3 sm:gap-5 lg:order-1">
+            <figure className="photo-tile photo-tile-tall overflow-hidden border border-[#071941]/15 bg-[#f7f3eb] p-2 shadow-xl">
+              <img src={adv02} alt="Atendimento jurídico online com análise de documentos" className="editorial-photo h-full min-h-[310px] w-full object-cover object-center sm:min-h-[430px]" />
+              <figcaption className="photo-caption">Análise cuidadosa</figcaption>
+            </figure>
+            <figure className="photo-tile mt-10 overflow-hidden border border-[#071941]/15 bg-[#f7f3eb] p-2 shadow-xl sm:mt-16">
+              <img src={adv03} alt="Dr. Elyud Freitas trabalhando em atendimento online" className="editorial-photo aspect-[.96/1] w-full object-cover object-center" />
+              <figcaption className="photo-caption">Atendimento próximo</figcaption>
+            </figure>
+          </div>
+          <div className="reveal reveal-delay-1 order-1 lg:order-2">
+            <SectionLabel>Atendimento sem distância</SectionLabel>
+            <h2 className="serif mt-6 max-w-[480px] text-5xl leading-[.98] text-[#071941] sm:text-6xl">Tecnologia para aproximar, não para afastar.</h2>
+            <p className="mt-8 max-w-[510px] text-lg leading-8 text-[#33415a]">Você pode receber orientação jurídica segura sem interromper sua rotina. Documentos, reuniões e decisões importantes cabem em um atendimento online organizado e humano.</p>
+            <div className="mt-9 border-l-2 border-[#ab6f0d] pl-5">
+              <p className="text-sm leading-7 text-[#536077]">Do primeiro contato à assinatura digital, você sabe quem está cuidando do seu caso e qual é o próximo passo.</p>
+            </div>
+            <a href={WHATSAPP_LINK} target="_blank" rel="noreferrer" className="gold-button mt-10 inline-flex items-center gap-3 rounded-sm px-6 py-4 text-sm font-bold" data-testid="link-online-service-whatsapp">
+              Agendar uma conversa <ArrowRight size={17} />
+            </a>
           </div>
         </div>
       </section>
