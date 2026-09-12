@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "Elyud Freitas Advocacia"
+description = "Landing page institucional para o escritório Elyud Freitas Advocacia, com foco em Direito de Família e Imobiliário, atendimento online e geração de contatos."
+version = "1.0.0"
+id = "artifacts/elyud-freitas-advocacia"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 18168
+
+[services.development]
+run = "pnpm --filter @workspace/elyud-freitas-advocacia run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/elyud-freitas-advocacia", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/elyud-freitas-advocacia/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "18168"
+BASE_PATH = "/"
