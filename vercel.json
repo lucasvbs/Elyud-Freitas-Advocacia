@@ -2,6 +2,6 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": "vite",
   "installCommand": "pnpm install --frozen-lockfile",
-  "buildCommand": "PORT=18168 BASE_PATH=/ pnpm --filter @workspace/elyud-freitas-advocacia run build && rm -rf public && cp -R artifacts/elyud-freitas-advocacia/dist/public public",
+  "buildCommand": "PORT=18168 BASE_PATH=/ pnpm --filter @workspace/elyud-freitas-advocacia run build && mkdir -p public && if [ -d artifacts/elyud-freitas-advocacia/dist/public ]; then cp -R artifacts/elyud-freitas-advocacia/dist/public/. public/; else cp -R dist/public/. public/; fi",
   "outputDirectory": "public"
 }
