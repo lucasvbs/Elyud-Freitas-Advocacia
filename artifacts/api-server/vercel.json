@@ -1,0 +1,8 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "name": "elyud-freitas",
+  "framework": "vite",
+  "installCommand": "pnpm install --frozen-lockfile",
+  "buildCommand": "cd ../elyud-freitas-advocacia && PORT=18168 BASE_PATH=/ pnpm run build && rm -rf ../api-server/public && mkdir -p ../api-server/public && cp -R dist/public/. ../api-server/public/",
+  "outputDirectory": "public"
+}
