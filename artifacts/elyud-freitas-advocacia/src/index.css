@@ -116,6 +116,15 @@
 .area-card-link:hover { color: #fff4d8; gap: .7rem; }
 .area-filter { border: 1px solid rgba(217,174,98,.3); color: #b8c3d4; }
 .area-filter:hover, .area-filter-active { border-color: #d9ae62; background: #ab6f0d; color: #fffaf1; }
+.simulator-panel { min-height: 520px; border: 1px solid rgba(217,174,98,.38); background: linear-gradient(145deg, #102855, #071941); padding: 1.5rem; box-shadow: 0 24px 55px rgba(7,25,65,.16); }
+.simulator-area-option { min-height: 205px; border: 1px solid rgba(217,174,98,.28); background: rgba(16,40,85,.72); padding: 1.1rem; transition: transform .35s ease, border-color .35s ease, background .35s ease, box-shadow .35s ease; }
+.simulator-area-option:hover, .simulator-area-option:focus-visible { border-color: rgba(217,174,98,.85); background: rgba(28,58,111,.95); box-shadow: 0 16px 32px rgba(0,0,0,.18); transform: translateY(-4px); }
+.simulator-option { min-height: 58px; border: 1px solid rgba(120,144,179,.36); background: rgba(16,40,85,.66); padding: .95rem 1rem; color: #dce3ed; transition: border-color .25s ease, background .25s ease, transform .25s ease; }
+.simulator-option:hover, .simulator-option:focus-visible { border-color: rgba(217,174,98,.76); background: rgba(28,58,111,.95); transform: translateX(3px); }
+.simulator-option-selected { border-color: #d9ae62; background: rgba(171,111,13,.32); color: #fffaf1; }
+.simulator-progress { height: 3px; overflow: hidden; background: rgba(120,144,179,.3); }
+.simulator-progress span { display: block; height: 100%; background: #d9ae62; transition: width .35s ease; }
+.simulator-result-card { border: 1px solid rgba(217,174,98,.22); background: rgba(16,40,85,.54); padding: 1.1rem; }
 .photo-section-glow { animation: orbitDrift 15s ease-in-out infinite reverse; }
 .photo-frame { pointer-events: none; }
 .editorial-photo { display: block; filter: saturate(.86) contrast(1.03); transition: transform .8s cubic-bezier(.2,.8,.2,1), filter .5s ease; }
@@ -131,4 +140,7 @@
   .reveal { opacity: 1; transform: none; }
   .area-orbit { animation: none; }
   .photo-section-glow { animation: none; }
+}
+@media (min-width: 640px) {
+  .simulator-panel { padding: 2.25rem; }
 }

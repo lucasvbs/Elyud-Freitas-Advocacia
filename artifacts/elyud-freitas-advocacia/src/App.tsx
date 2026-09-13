@@ -7,8 +7,10 @@ import {
   Building2,
   Check,
   ChevronDown,
+  ChevronLeft,
   Clock3,
   Crown,
+  ClipboardList,
   FileCheck2,
   FileText,
   Gavel,
@@ -21,6 +23,7 @@ import {
   LockKeyhole,
   Menu,
   MessageCircle,
+  RotateCcw,
   Scale,
   ScrollText,
   ShieldCheck,
@@ -39,6 +42,7 @@ const WHATSAPP_LINK =
 
 const navItems = [
   { label: 'Atuação', href: '#atuacao' },
+  { label: 'Simulador', href: '#simulador' },
   { label: 'Como funciona', href: '#como-funciona' },
   { label: 'Depoimentos', href: '#depoimentos' },
   { label: 'Dúvidas', href: '#duvidas' },
@@ -175,6 +179,208 @@ const practiceAreas = [
   },
 ];
 
+type SimulatorArea = 'familia' | 'imobiliario' | 'contratos';
+
+type SimulatorQuestion = {
+  id: string;
+  label: string;
+  options: Array<{ value: string; label: string }>;
+};
+
+type SimulatorFlow = {
+  label: string;
+  description: string;
+  icon: typeof Scale;
+  questions: SimulatorQuestion[];
+  scenarioLabels: Record<string, string>;
+  focusByScenario: Record<string, string>;
+  defaultFocus: string;
+  nextSteps: string[];
+  documents: string[];
+};
+
+const simulatorAreaOptions: Array<{
+  value: SimulatorArea;
+  label: string;
+  description: string;
+  icon: typeof Scale;
+}> = [
+  {
+    value: 'familia',
+    label: 'Família',
+    description: 'Divórcio, guarda, pensão ou inventário.',
+    icon: UsersRound,
+  },
+  {
+    value: 'imobiliario',
+    label: 'Imobiliário',
+    description: 'Imóvel, compra e venda, locação ou regularização.',
+    icon: Home,
+  },
+  {
+    value: 'contratos',
+    label: 'Contratos',
+    description: 'Revisão, negociação ou segurança antes de assinar.',
+    icon: FileText,
+  },
+];
+
+const simulatorFlows: Record<SimulatorArea, SimulatorFlow> = {
+  familia: {
+    label: 'Direito de Família',
+    description: 'Organize as informações essenciais para uma primeira conversa sobre família e patrimônio.',
+    icon: UsersRound,
+    questions: [
+      {
+        id: 'situation',
+        label: 'Qual situação mais se aproxima do que você precisa resolver?',
+        options: [
+          { value: 'divorcio', label: 'Divórcio ou dissolução de união' },
+          { value: 'filhos', label: 'Guarda, convivência ou pensão' },
+          { value: 'heranca', label: 'Inventário ou partilha de bens' },
+        ],
+      },
+      {
+        id: 'stage',
+        label: 'Em que momento você está?',
+        options: [
+          { value: 'entender', label: 'Ainda estou entendendo as possibilidades' },
+          { value: 'conversar', label: 'Já tentei conversar e preciso de orientação' },
+          { value: 'urgente', label: 'Existe um prazo ou conflito acontecendo agora' },
+        ],
+      },
+      {
+        id: 'priority',
+        label: 'O que você mais quer proteger neste momento?',
+        options: [
+          { value: 'acordo', label: 'Buscar um acordo seguro' },
+          { value: 'filhos', label: 'Preservar o bem-estar dos filhos' },
+          { value: 'patrimonio', label: 'Organizar e proteger o patrimônio' },
+        ],
+      },
+    ],
+    scenarioLabels: {
+      divorcio: 'divórcio ou dissolução de união',
+      filhos: 'guarda, convivência ou pensão',
+      heranca: 'inventário ou partilha de bens',
+    },
+    focusByScenario: {
+      divorcio: 'Uma primeira conversa pode ajudar a mapear regime de bens, filhos e a possibilidade de um caminho consensual.',
+      filhos: 'A prioridade é organizar a rotina, as necessidades envolvidas e os documentos que ajudam a construir uma orientação responsável.',
+      heranca: 'O primeiro passo costuma ser organizar os bens, os herdeiros e a documentação disponível antes de escolher o caminho adequado.',
+    },
+    defaultFocus: 'Uma primeira conversa ajuda a organizar os fatos, os documentos e os caminhos possíveis para o seu momento.',
+    nextSteps: [
+      'Reunir uma linha do tempo simples dos principais acontecimentos.',
+      'Separar documentos pessoais e registros relacionados ao caso.',
+      'Agendar uma análise individual antes de tomar decisões definitivas.',
+    ],
+    documents: ['Documentos pessoais', 'Certidões ou registros relevantes', 'Contratos, comprovantes ou decisões já existentes'],
+  },
+  imobiliario: {
+    label: 'Direito Imobiliário',
+    description: 'Tenha mais clareza sobre o que reunir antes de conversar sobre um imóvel.',
+    icon: Home,
+    questions: [
+      {
+        id: 'situation',
+        label: 'Qual situação mais se aproxima do que você precisa resolver?',
+        options: [
+          { value: 'negociacao', label: 'Compra ou venda de imóvel' },
+          { value: 'regularizacao', label: 'Regularização ou documentação' },
+          { value: 'locacao', label: 'Locação, cobrança ou despejo' },
+        ],
+      },
+      {
+        id: 'stage',
+        label: 'Em que momento está a negociação ou o problema?',
+        options: [
+          { value: 'antes', label: 'Antes de assinar ou fechar negócio' },
+          { value: 'andamento', label: 'O negócio já está em andamento' },
+          { value: 'conflito', label: 'Já existe um conflito ou descumprimento' },
+        ],
+      },
+      {
+        id: 'priority',
+        label: 'Qual é a sua principal preocupação?',
+        options: [
+          { value: 'seguranca', label: 'Evitar riscos antes de avançar' },
+          { value: 'documentos', label: 'Entender a documentação do imóvel' },
+          { value: 'prazo', label: 'Saber quais medidas podem ser avaliadas' },
+        ],
+      },
+    ],
+    scenarioLabels: {
+      negociacao: 'compra ou venda de imóvel',
+      regularizacao: 'regularização ou documentação imobiliária',
+      locacao: 'locação, cobrança ou despejo',
+    },
+    focusByScenario: {
+      negociacao: 'Uma análise prévia pode ajudar a conferir documentos, responsabilidades e riscos antes de uma decisão patrimonial.',
+      regularizacao: 'O caminho começa pelo histórico do imóvel e pela conferência dos documentos disponíveis.',
+      locacao: 'É importante organizar contrato, pagamentos e comunicações antes de avaliar os próximos passos.',
+    },
+    defaultFocus: 'Uma análise documental ajuda a entender os riscos e os caminhos possíveis antes de qualquer decisão patrimonial.',
+    nextSteps: [
+      'Organizar a matrícula, contrato ou documento que formaliza a relação.',
+      'Separar comprovantes, notificações e conversas importantes.',
+      'Evitar assinar novos documentos antes de uma análise individual.',
+    ],
+    documents: ['Matrícula, escritura ou contrato', 'Comprovantes e notificações', 'Documentos pessoais das partes envolvidas'],
+  },
+  contratos: {
+    label: 'Contratos',
+    description: 'Identifique o que vale a pena revisar antes de assumir um compromisso.',
+    icon: FileText,
+    questions: [
+      {
+        id: 'situation',
+        label: 'Qual situação mais se aproxima do que você precisa resolver?',
+        options: [
+          { value: 'assinar', label: 'Ainda vou assinar um contrato' },
+          { value: 'revisar', label: 'Quero revisar um contrato existente' },
+          { value: 'descumprimento', label: 'A outra parte não cumpriu o combinado' },
+        ],
+      },
+      {
+        id: 'stage',
+        label: 'O que você já tem em mãos?',
+        options: [
+          { value: 'minuta', label: 'Uma minuta ou proposta' },
+          { value: 'assinado', label: 'Um contrato assinado' },
+          { value: 'mensagens', label: 'Mensagens, comprovantes ou outros registros' },
+        ],
+      },
+      {
+        id: 'priority',
+        label: 'O que você mais quer esclarecer?',
+        options: [
+          { value: 'riscos', label: 'Riscos e responsabilidades' },
+          { value: 'clausulas', label: 'Cláusulas e obrigações' },
+          { value: 'proximo', label: 'Qual próximo passo pode ser avaliado' },
+        ],
+      },
+    ],
+    scenarioLabels: {
+      assinar: 'um contrato antes da assinatura',
+      revisar: 'a revisão de um contrato',
+      descumprimento: 'um possível descumprimento contratual',
+    },
+    focusByScenario: {
+      assinar: 'Revisar o documento antes da assinatura pode ajudar a tornar obrigações, prazos e riscos mais claros.',
+      revisar: 'Uma leitura orientada ajuda a identificar pontos que merecem esclarecimento ou negociação.',
+      descumprimento: 'O contrato e os registros do que aconteceu são importantes para entender quais medidas podem ser avaliadas.',
+    },
+    defaultFocus: 'Uma análise do documento e do contexto ajuda a transformar cláusulas e obrigações em decisões mais claras.',
+    nextSteps: [
+      'Separar a versão completa e atual do contrato.',
+      'Anotar dúvidas, prazos e pontos que parecem diferentes do combinado.',
+      'Evitar alterar ou encerrar a relação sem orientação individual.',
+    ],
+    documents: ['Contrato ou proposta completa', 'Comprovantes e aditivos', 'Mensagens ou notificações relacionadas'],
+  },
+};
+
 const testimonials = [
   ['“Atendimento com clareza e atenção, nota dez.”', 'Tony Marques'],
   ['“Muito diligente, atencioso, competente e confiável.”', 'Neire Rodrigues'],
@@ -254,6 +460,31 @@ function App() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [activeArea, setActiveArea] = useState<AreaCategory>('todos');
   const [submitted, setSubmitted] = useState(false);
+  const [simulatorArea, setSimulatorArea] = useState<SimulatorArea | null>(null);
+  const [simulatorStep, setSimulatorStep] = useState(0);
+  const [simulatorAnswers, setSimulatorAnswers] = useState<Record<string, string>>({});
+  const [simulatorConsent, setSimulatorConsent] = useState(false);
+  const [simulatorError, setSimulatorError] = useState('');
+
+  const simulatorFlow = simulatorArea ? simulatorFlows[simulatorArea] : null;
+  const simulatorQuestion = simulatorFlow?.questions[simulatorStep];
+  const simulatorResultVisible = Boolean(simulatorFlow && simulatorStep >= simulatorFlow.questions.length);
+  const simulatorScenario = simulatorFlow
+    ? simulatorFlow.scenarioLabels[simulatorAnswers.situation] || 'a sua situação jurídica'
+    : '';
+  const simulatorFocus = simulatorFlow
+    ? simulatorFlow.focusByScenario[simulatorAnswers.situation] || simulatorFlow.defaultFocus
+    : '';
+  const simulatorContactLink = simulatorFlow
+    ? 'https://wa.me/?text=' +
+      encodeURIComponent(
+        `Olá, gostaria de conversar sobre ${simulatorScenario} após fazer a orientação inicial no site do Dr. Elyud Freitas.`,
+      )
+    : WHATSAPP_LINK;
+  const SimulatorIcon = simulatorFlow?.icon || Scale;
+  const simulatorProgress = simulatorFlow
+    ? Math.min(100, ((simulatorStep + 1) / simulatorFlow.questions.length) * 100)
+    : 0;
 
   const submitForm = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -261,6 +492,57 @@ function App() {
   };
 
   const closeMenu = () => setMenuOpen(false);
+
+  const startSimulator = (area: SimulatorArea) => {
+    setSimulatorArea(area);
+    setSimulatorStep(0);
+    setSimulatorAnswers({});
+    setSimulatorConsent(false);
+    setSimulatorError('');
+  };
+
+  const resetSimulator = () => {
+    setSimulatorArea(null);
+    setSimulatorStep(0);
+    setSimulatorAnswers({});
+    setSimulatorConsent(false);
+    setSimulatorError('');
+  };
+
+  const goToPreviousSimulatorStep = () => {
+    setSimulatorError('');
+    if (simulatorStep === 0) {
+      setSimulatorArea(null);
+      setSimulatorAnswers({});
+      setSimulatorConsent(false);
+      return;
+    }
+    setSimulatorStep((current) => current - 1);
+  };
+
+  const selectSimulatorOption = (value: string) => {
+    if (!simulatorQuestion) return;
+    setSimulatorAnswers((current) => ({ ...current, [simulatorQuestion.id]: value }));
+    setSimulatorError('');
+  };
+
+  const goToNextSimulatorStep = () => {
+    if (!simulatorQuestion) return;
+    if (!simulatorAnswers[simulatorQuestion.id]) {
+      setSimulatorError('Escolha uma opção para continuar.');
+      return;
+    }
+    setSimulatorError('');
+    setSimulatorStep((current) => current + 1);
+  };
+
+  const openSimulatorContact = () => {
+    if (!simulatorConsent) {
+      setSimulatorError('Leia e aceite o aviso de privacidade para falar com o escritório.');
+      return;
+    }
+    window.open(simulatorContactLink, '_blank', 'noopener,noreferrer');
+  };
 
   return (
     <main className="grain overflow-hidden bg-[#f7f3eb] text-[#071941]">
@@ -477,6 +759,152 @@ function App() {
                   </a>
                 </article>
               ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="simulador" className="bg-[#e9e3d8] px-5 py-24 sm:px-8 lg:px-10 lg:py-32">
+        <div className="mx-auto grid max-w-[1110px] items-start gap-12 lg:grid-cols-[.72fr_1.28fr] lg:gap-24">
+          <div className="reveal lg:sticky lg:top-10">
+            <SectionLabel>Orientação inicial</SectionLabel>
+            <h2 className="serif mt-6 text-5xl leading-[.98] text-[#071941] sm:text-6xl">Entenda o próximo passo antes de tomar uma decisão.</h2>
+            <p className="mt-7 max-w-[380px] text-sm leading-7 text-[#59657a]">
+              Responda três perguntas sobre o seu momento e receba um ponto de partida para conversar com o escritório.
+            </p>
+            <div className="mt-9 flex items-center gap-3 border-l-2 border-[#ab6f0d] pl-5 text-xs leading-6 text-[#59657a]">
+              <ShieldCheck size={20} className="shrink-0 text-[#ab6f0d]" />
+              <span>Sem diagnóstico automático, promessa de resultado ou exposição de dados sensíveis.</span>
+            </div>
+          </div>
+
+          <div className="simulator-panel reveal reveal-delay-1">
+            {!simulatorFlow ? (
+              <div>
+                <div className="flex items-start justify-between gap-6">
+                  <div>
+                    <p className="eyebrow text-[#d9ae62]">Comece por aqui</p>
+                    <h3 className="serif mt-4 text-3xl leading-tight text-[#f7f3eb] sm:text-4xl">Qual assunto você quer organizar?</h3>
+                  </div>
+                  <ClipboardList className="shrink-0 text-[#d9ae62]" size={30} strokeWidth={1.35} />
+                </div>
+                <p className="mt-5 max-w-[520px] text-sm leading-7 text-[#b9c4d5]">A orientação é geral e serve para preparar uma primeira conversa, não para substituir uma análise jurídica individual.</p>
+                <div className="mt-8 grid gap-3 sm:grid-cols-3">
+                  {simulatorAreaOptions.map(({ value, label, description, icon: Icon }) => (
+                    <button
+                      key={value}
+                      type="button"
+                      onClick={() => startSimulator(value)}
+                      className="simulator-area-option group text-left"
+                      data-testid={`button-simulator-area-${value}`}
+                    >
+                      <Icon size={22} className="text-[#d9ae62]" strokeWidth={1.35} />
+                      <span className="mt-6 block text-sm font-bold text-[#f7f3eb]">{label}</span>
+                      <span className="mt-2 block text-xs leading-5 text-[#aeb8c9]">{description}</span>
+                      <span className="mt-5 inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[.13em] text-[#e4c582]">Começar <ArrowRight size={13} /></span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <div>
+                <div className="flex items-center justify-between gap-4 border-b border-[#d9ae62]/20 pb-5">
+                  <button type="button" onClick={goToPreviousSimulatorStep} className="inline-flex items-center gap-2 text-xs font-bold text-[#d9ae62] transition-colors hover:text-[#fff4d8]" data-testid="button-simulator-back">
+                    <ChevronLeft size={15} /> Voltar
+                  </button>
+                  <button type="button" onClick={resetSimulator} className="inline-flex items-center gap-2 text-xs font-bold text-[#aeb8c9] transition-colors hover:text-[#f7f3eb]" data-testid="button-simulator-reset">
+                    <RotateCcw size={14} /> Recomeçar
+                  </button>
+                </div>
+
+                {!simulatorResultVisible && simulatorQuestion ? (
+                  <div className="pt-7">
+                    <div className="flex items-center justify-between gap-4 text-[10px] font-bold uppercase tracking-[.15em] text-[#9daabd]">
+                      <span>{simulatorFlow.label}</span>
+                      <span>Pergunta {String(simulatorStep + 1).padStart(2, '0')} de {String(simulatorFlow.questions.length).padStart(2, '0')}</span>
+                    </div>
+                    <div className="simulator-progress mt-4" role="progressbar" aria-label="Progresso da orientação" aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(simulatorProgress)}>
+                      <span style={{ width: `${simulatorProgress}%` }} />
+                    </div>
+                    <h3 className="serif mt-9 max-w-[600px] text-3xl leading-tight text-[#f7f3eb] sm:text-4xl">{simulatorQuestion.label}</h3>
+                    <div className="mt-7 grid gap-3">
+                      {simulatorQuestion.options.map((option) => {
+                        const selected = simulatorAnswers[simulatorQuestion.id] === option.value;
+                        return (
+                          <button
+                            key={option.value}
+                            type="button"
+                            aria-pressed={selected}
+                            onClick={() => selectSimulatorOption(option.value)}
+                            className={`simulator-option flex items-center justify-between gap-4 text-left ${selected ? 'simulator-option-selected' : ''}`}
+                            data-testid={`button-simulator-option-${simulatorQuestion.id}-${option.value}`}
+                          >
+                            <span className="text-sm font-semibold">{option.label}</span>
+                            <span className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full border ${selected ? 'border-[#f7f3eb] bg-[#ab6f0d]' : 'border-[#7890b3]'}`}>
+                              {selected && <Check size={13} />}
+                            </span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                    {simulatorError && <p role="alert" className="mt-4 text-xs font-semibold text-[#f4c9a9]">{simulatorError}</p>}
+                    <button type="button" onClick={goToNextSimulatorStep} className="gold-button mt-7 inline-flex items-center gap-3 rounded-sm px-5 py-3 text-sm font-bold" data-testid="button-simulator-next">
+                      {simulatorStep === simulatorFlow.questions.length - 1 ? 'Ver orientação' : 'Continuar'} <ArrowRight size={16} />
+                    </button>
+                  </div>
+                ) : (
+                  <div className="pt-7">
+                    <div className="flex items-center gap-3 text-[10px] font-bold uppercase tracking-[.15em] text-[#d9ae62]">
+                      <SimulatorIcon size={17} strokeWidth={1.4} />
+                      Orientação inicial
+                    </div>
+                    <h3 className="serif mt-5 max-w-[620px] text-3xl leading-tight text-[#f7f3eb] sm:text-4xl">Um ponto de partida para {simulatorScenario}.</h3>
+                    <p className="mt-5 max-w-[620px] text-sm leading-7 text-[#cbd3df]">{simulatorFocus}</p>
+                    <div className="mt-8 grid gap-4 sm:grid-cols-2">
+                      <div className="simulator-result-card">
+                        <p className="eyebrow text-[#d9ae62]">Próximos passos</p>
+                        <ul className="mt-4 space-y-3">
+                          {simulatorFlow.nextSteps.map((step) => (
+                            <li key={step} className="flex gap-3 text-xs leading-5 text-[#d4dbe6]">
+                              <Check size={14} className="mt-0.5 shrink-0 text-[#d9ae62]" /> {step}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                      <div className="simulator-result-card">
+                        <p className="eyebrow text-[#d9ae62]">Separe, se tiver</p>
+                        <ul className="mt-4 space-y-3">
+                          {simulatorFlow.documents.map((document) => (
+                            <li key={document} className="flex gap-3 text-xs leading-5 text-[#d4dbe6]">
+                              <FileCheck2 size={14} className="mt-0.5 shrink-0 text-[#d9ae62]" /> {document}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                    <div className="mt-7 border-t border-[#d9ae62]/20 pt-6">
+                      <label className="flex cursor-pointer items-start gap-3 text-xs leading-5 text-[#cbd3df]">
+                        <input
+                          type="checkbox"
+                          checked={simulatorConsent}
+                          onChange={(event) => {
+                            setSimulatorConsent(event.target.checked);
+                            setSimulatorError('');
+                          }}
+                          className="mt-1 h-4 w-4 shrink-0 accent-[#ab6f0d]"
+                          data-testid="input-simulator-lgpd-consent"
+                        />
+                        <span>Li e concordo com o tratamento dos meus dados conforme a <a href="https://elyud.adv.br/politica-de-privacidade" target="_blank" rel="noreferrer" className="font-bold text-[#f4e2bd] underline">Política de Privacidade</a>. Não envie documentos ou detalhes sensíveis por este simulador.</span>
+                      </label>
+                      {simulatorError && <p role="alert" className="mt-3 text-xs font-semibold text-[#f4c9a9]">{simulatorError}</p>}
+                      <button type="button" onClick={openSimulatorContact} className={`mt-6 inline-flex items-center gap-3 rounded-sm px-5 py-3 text-sm font-bold transition-all ${simulatorConsent ? 'gold-button' : 'cursor-not-allowed bg-[#31476d] text-[#9daabd]'}`} data-testid="button-simulator-contact">
+                        Falar sobre este assunto <MessageCircle size={16} />
+                      </button>
+                    </div>
+                    <p className="mt-5 text-[11px] leading-5 text-[#8f9eb4]">Este resultado é apenas informativo, não constitui aconselhamento jurídico e não representa promessa de resultado.</p>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </div>
       </section>
